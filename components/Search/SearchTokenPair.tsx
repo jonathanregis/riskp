@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { tokenPairProps } from '@/types/tokenPair';
 import { useTokens } from '@/contexts/TokensContext';
 import Link from 'next/link';
+import { debounce } from '@/utils/helpers';
 
 export default function SearchTokenPair() {
     const [term, setTerm] = useState<string>("");
@@ -16,8 +17,11 @@ export default function SearchTokenPair() {
             }
         }
     }, [term])
+    const inputChange = debounce((t) => {
+        setTerm(t.target.value)
+    }, 3000)
     return <div className={cx('bg-white w-full relative max-w-2xl p-2 rounded-t-lg', { 'rounded-b-lg': term == "" })}>
-        <input name="search-token" onChange={(e) => setTerm(e.target.value)} className='w-full b-0 p-2 outline-none' placeholder="Search here" />
+        <input name="search-token" onChange={inputChange} className='w-full b-0 p-2 outline-none' placeholder="Search here" />
         <div role="list" className={cx("p-2 w-full border-t absolute bg-white rounded-b-lg left-0 top-full", { "hidden": term == "" })}>
             {!results.length ? <p role="listitem">No results found for "{term}"</p>
                 : <ul>
