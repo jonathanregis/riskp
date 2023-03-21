@@ -10,7 +10,7 @@ export default function SearchTokenPair() {
     const { tokens } = useTokens();
     useEffect(() => {
         if (term) {
-            const found = tokens?.filter((x: tokenPairProps) => x.id.includes(term)) // We search the given term within the id
+            const found = tokens?.filter((x: tokenPairProps) => x.id.includes(term.toUpperCase())) // We search the given term within the id
             if (found) {
                 setResults(found)
             }
@@ -18,8 +18,8 @@ export default function SearchTokenPair() {
     }, [term])
     return <div className={cx('bg-white w-full relative max-w-2xl p-2 rounded-t-lg', { 'rounded-b-lg': term == "" })}>
         <input name="search-token" onChange={(e) => setTerm(e.target.value)} className='w-full b-0 p-2 outline-none' placeholder="Search here" />
-        <div className={cx("p-2 w-full border-t absolute bg-white rounded-b-lg left-0 top-full", { "hidden": term == "" })}>
-            {!results.length ? <p>No results found for "{term}"</p>
+        <div role="list" className={cx("p-2 w-full border-t absolute bg-white rounded-b-lg left-0 top-full", { "hidden": term == "" })}>
+            {!results.length ? <p role="listitem">No results found for "{term}"</p>
                 : <ul>
                     {results.map(r => {
                         return <ResultItem link={`/trade/${r.id}USD`} title={r.id} />
@@ -31,5 +31,5 @@ export default function SearchTokenPair() {
 }
 
 export function ResultItem({ link, onClick, title, subttitle }: { link: string, onClick?: Function, title?: string, subttitle?: string }) {
-    return <li className='p-2 my-2'><Link {...onClick} href={link}>{title}</Link></li>
+    return <li role="listitem" className='p-2 my-2'><Link role="link" {...onClick} href={link}>{title}</Link></li>
 }
