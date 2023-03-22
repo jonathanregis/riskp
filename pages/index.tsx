@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchTokenPair from '@/components/Search/SearchTokenPair'
-import Card from '@/components/Search/Card/Card'
+import Card from '@/components/Card/Card'
 
 const inter = Inter({ subsets: ['latin'] })
 import ETH from '../node_modules/cryptocurrency-icons/128/icon/eth.png';
