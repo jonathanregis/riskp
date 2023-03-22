@@ -7,6 +7,7 @@ import { debounce } from '@/utils/helpers';
 
 export default function SearchTokenPair() {
     const [term, setTerm] = useState<string>("");
+    const [showList, setShowList] = useState<boolean>(false);
     const [results, setResults] = useState<tokenPairProps[]>([]);
     const { tokens } = useTokens();
     useEffect(() => {
@@ -18,11 +19,16 @@ export default function SearchTokenPair() {
         }
     }, [term])
     const inputChange = debounce((t) => {
-        setTerm(t.target.value)
-    }, 3000)
-    return <div className={cx('bg-white w-full relative max-w-2xl p-2 rounded-t-lg shadow-md', { 'rounded-b-lg': term == "" })}>
-        <input name="search-token" onChange={inputChange} className='w-full b-0 p-2 outline-none' placeholder="Search here" />
-        <div role="list" className={cx("p-2 w-full border-t absolute bg-white rounded-b-lg overflow-y-auto max-h-72 z-40 shadow-md left-0 top-full", { "hidden": term == "" })}>
+        if (t.target.value != "") {
+            setShowList(true);
+        } else {
+            setShowList(false)
+        }
+        setTerm(t.target.value);
+    }, 500)
+    return <div className={cx('bg-white w-full relative max-w-2xl p-2 rounded-t-lg shadow-md', { 'rounded-b-lg': !showList })}>
+        <input name="search-token" onBlur={() => setShowList(false)} onChange={inputChange} className='w-full b-0 p-2 outline-none' placeholder="Search here" />
+        <div role="list" className={cx("p-2 w-full border-t absolute bg-white rounded-b-lg overflow-y-auto max-h-72 z-40 shadow-md left-0 top-full", { "hidden": !showList })}>
             {!results.length ? <p role="listitem">No results found for "{term}"</p>
                 : <ul>
                     {results.map(r => {
