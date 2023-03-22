@@ -1,18 +1,28 @@
 import React, { ReactNode } from "react";
+import cx from 'classnames';
+import Link from "next/link";
 
 interface CardProps {
     children: ReactNode;
     title?: string;
     subtitle?: string;
+    color?: "blue" | "yellow" | "green" | "purple";
+    icon?: string;
+    href?: string;
+    onClick?: Function
 }
 
-const Card: React.FC<CardProps> = ({ children, title, subtitle }) => {
+const Card: React.FC<CardProps> = ({ children, title, subtitle, color = "blue", icon, href = "" }) => {
     return (
-        <div className="bg-white rounded-lg shadow-md p-6">
-            {title && <h2 className="text-2xl font-bold mb-2">{title}</h2>}
-            {subtitle && <p className="text-gray-600 mb-4">{subtitle}</p>}
-            <div>{children}</div>
-        </div>
+        <Link href={href} className={cx(`card ${color} p-4 pt-0 m-2`)}>
+            {title && <h2 className="text-2xl self-start font-bold uppercase">{title}</h2>}
+            {subtitle && <h2 className="text-sm font-bold self-start">{subtitle}</h2>}
+            <div className="overlay"></div>
+            <div className="circle mb-4">
+                <img src={icon} width="64px" height="72px" />
+            </div>
+            {children}
+        </Link>
     );
 };
 
