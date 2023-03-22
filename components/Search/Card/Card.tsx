@@ -6,7 +6,7 @@ interface CardProps {
     children: ReactNode;
     title?: string;
     subtitle?: string;
-    color?: "blue" | "yellow" | "green" | "purple";
+    color?: "blue" | "yellow" | "green" | "purple" | "pink" | "black";
     icon?: string;
     href?: string;
     onClick?: Function
@@ -14,7 +14,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ children, title, subtitle, color = "blue", icon, href = "" }) => {
     return (
-        <Link href={href} className={cx(`card ${color} p-4 pt-0 m-2`)}>
+        <Link href={href} className={cx(`card ${color} p-4 pt-0`)}>
             {title && <h2 className="text-2xl self-start font-bold uppercase">{title}</h2>}
             {subtitle && <h2 className="text-sm font-bold self-start">{subtitle}</h2>}
             <div className="overlay"></div>
