@@ -11,6 +11,7 @@ export function debounce<
   let timerId: ReturnType<typeof setTimeout>;
 
   function debouncedFn(
+    this: any,
     ...args: Parameters<T>
   ): ReturnType<T> {
     const context = this;
@@ -27,5 +28,50 @@ export function debounce<
     clearTimeout(timerId);
   };
 
-  return debouncedFn as DebounceFn<T>;
+  return debouncedFn as unknown as DebounceFn<T>;
+}
+
+export function getPairFromString(
+  s: string | undefined
+) {
+  if (!s) {
+    throw "No string provided";
+  }
+  const parts = s.split("-");
+  if (parts.length != 2) {
+    throw "incorrect string format provided. please provide a XXX-XXX pair";
+  }
+  const [base, quote] = s.split("-");
+  return { base, quote };
+}
+
+export function getTokenPair(
+  quote: string,
+  base: string,
+  tokens: any[]
+) {
+  const quoteToken = tokens.find(
+    (x) => x.id == quote
+  );
+  const baseToken = tokens.find(
+    (x) => x.id == base
+  );
+  if (quoteToken && baseToken) {
+    return {
+      quoteAddress:
+        quoteToken.supported_networks[0]
+          ?.contract_address ||
+        quoteToken.supported_networks[1]
+          ?.contract_address ||
+        "",
+      baseAddress:
+        baseToken.supported_networks[0]
+          ?.contract_address ||
+        baseToken.supported_networks[1]
+          ?.contract_address ||
+        "",
+      fullTokenDetails: { quoteToken, baseToken },
+    };
+  } else
+    throw "One of the tokens were not found in our list of tokens";
 }

@@ -1,5 +1,10 @@
 export type tokenPairProps = {
-  id: string;
-  baseAddress: string;
-  quoteAddress: string;
+  base: string;
+  quote: string;
+};
+
+export type pairSelectorProps = {
+  defaultBase?: string;
+  defaultQuote?: string;
+  onChange: Function;
 };

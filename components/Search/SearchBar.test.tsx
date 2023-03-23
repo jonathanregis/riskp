@@ -27,7 +27,7 @@ describe('SearchTokenPair', () => {
         expect(resultList).toBeInTheDocument();
         setTimeout(() => {
             const resultLinks = screen.getAllByRole('link');
-            expect(resultLinks[0]).toHaveAttribute('href', '/trade/MATICUSD');
+            expect(resultLinks[0]).toHaveAttribute('href', '/trade/MATIC-USD');
         }, 4000)
 
     });
