@@ -1,8 +1,8 @@
 import cx from 'classnames';
 
 export function OrderBook({ bids, asks, tokenId = "USD" }: { bids: any[], asks: any[], tokenId: string | undefined }) {
-    const bidsTotal = bids.reduce((prev, curr) => parseFloat(prev) + parseFloat(curr[1]))
-    const asksTotal = asks.reduce((prev, curr) => parseFloat(prev) + parseFloat(curr[1]))
+    const bidsTotal = bids.length ? bids.reduce((prev, curr) => parseFloat(prev) + parseFloat(curr[1])) : 0
+    const asksTotal = asks.length ? asks.reduce((prev, curr) => parseFloat(prev) + parseFloat(curr[1])) : 0
     let currentBidsTotal = 0;
     let currentAsksTotal = 0;
     return <div className="flex flex-wrap align-stretch justify-between">
