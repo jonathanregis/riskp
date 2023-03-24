@@ -38,7 +38,7 @@ exports[`PairSelector component calls onApply function when update button is cli
       </select>
     </div>
     <button
-      class="p-4 w-full flex-basis-full bg-[#daec03] text-bold uppercase m-4"
+      class="shadow-lg rounded-lg p-4 w-full flex-basis-full bg-[#daec03] text-bold uppercase m-4"
     >
       update
     </button>

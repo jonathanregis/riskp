@@ -44,34 +44,30 @@ export default function TradePair() {
             size: 0,
         },
         title: {
-            text: tokenPair?.base,
-            align: 'left'
+            text: "Data for the last 24H at 15 Min intervals",
+            align: 'left',
+            margin: 0
+        },
+        stroke: {
+            curve: 'straight',
+            lineCap: 'square',
+            colors: ["#daec03"],
+            width: 3,
+            dashArray: 0,
         },
         fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 1,
-                inverseColors: false,
-                opacityFrom: 0.4,
-                opacityTo: 0.5,
-                stops: [0, 90, 100]
-            },
+            type: "gradient"
         },
         yaxis: {
             labels: {
                 show: false
             },
-            title: {
-                text: 'Price'
-            },
         },
         xaxis: {
             type: 'datetime',
             categories: history.length ? history.map((x) => x.time_close) : [],
-            labels: {
-                dateTimeFormatter: {
-                    'hour': 'hh:mm a',
-                }
+            borders: {
+                show: false
             }
         },
         tooltip: {
@@ -79,6 +75,9 @@ export default function TradePair() {
             x: {
                 format: 'hh:mm tt'
             }
+        },
+        grid: {
+            show: false
         }
     }
 
@@ -98,6 +97,13 @@ export default function TradePair() {
     }, [tokenPair])
 
     return <>
+        <style jsx global>
+            {`
+                body {
+                    background: white;
+                }
+            `}
+        </style>
         <Head>
             <title>{pair} | Tech Test</title>
             <meta name="description" content="Technical test from The Risk Protocol" />
@@ -108,7 +114,7 @@ export default function TradePair() {
             <div className='flex flex-1 flex-wrap self-stretch bg-white p-4'>
                 <div className='flex-1'>
                     <h1 className='text-3xl font-bold'>{tokenPair?.base} / {tokenPair?.quote}</h1>
-                    <h2 className='text-xl font-bold text-mute'>{history.length ? history[history.length - 1].rate_close : '--'} {tokenPair?.quote}</h2>
+                    <h2 className='text-xl font-bold text-mute'>{history.length ? Intl.NumberFormat().format(history[history.length - 1].rate_close) : '--'} {tokenPair?.quote}</h2>
                     {history.length && (typeof window !== 'undefined') ? <ReactApexChart options={options as ApexOptions} series={series} /> : null}
                 </div>
                 <div className='flex-1'>

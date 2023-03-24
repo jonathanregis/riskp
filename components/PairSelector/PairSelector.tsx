@@ -40,6 +40,6 @@ export function PairSelector({ defaultBase = 'ETH', defaultQuote = 'USD', onAppl
                 })}
             </select>
         </div>
-        {(base != defaultBase || quote != defaultQuote) ? <button onClick={() => onApply(base, quote)} className="p-4 w-full flex-basis-full bg-[#daec03] text-bold uppercase m-4">update</button> : null}
+        {(base != defaultBase || quote != defaultQuote) ? <button onClick={() => onApply(base, quote)} className="shadow-lg rounded-lg p-4 w-full flex-basis-full bg-[#daec03] text-bold uppercase m-4">update</button> : null}
     </div>
 }
