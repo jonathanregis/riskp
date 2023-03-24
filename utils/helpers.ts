@@ -1,34 +1,16 @@
-export type DebounceFn<
-  T extends (...args: any[]) => any
-> = (
-  fn: T,
-  delay: number
-) => T & { cancel: () => void };
-
-export function debounce<
-  T extends (...args: any[]) => any
->(fn: T, delay: number): DebounceFn<T> {
-  let timerId: ReturnType<typeof setTimeout>;
-
-  function debouncedFn(
-    this: any,
-    ...args: Parameters<T>
-  ): ReturnType<T> {
-    const context = this;
-
-    clearTimeout(timerId);
-    timerId = setTimeout(() => {
-      fn.apply(context, args);
-    }, delay);
-
-    return fn.apply(context, args);
-  }
-
-  debouncedFn.cancel = () => {
-    clearTimeout(timerId);
+export function debounce<T extends Function>(
+  cb: T,
+  wait = 20
+) {
+  let h = 0;
+  let callable = (...args: any) => {
+    clearTimeout(h);
+    h = setTimeout(
+      () => cb(...args),
+      wait
+    ) as unknown as number;
   };
-
-  return debouncedFn as unknown as DebounceFn<T>;
+  return <T>(<any>callable);
 }
 
 export function getPairFromString(

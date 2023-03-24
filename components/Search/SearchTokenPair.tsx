@@ -18,7 +18,7 @@ export default function SearchTokenPair() {
             }
         }
     }, [term])
-    const inputChange = () => debounce((t) => {
+    const inputChange = debounce((t: any) => {
         if (t.target.value != "") {
             setShowList(true);
         } else {
@@ -27,12 +27,12 @@ export default function SearchTokenPair() {
         setTerm(t.target.value);
     }, 500)
     return <div className={cx('bg-white w-full relative max-w-2xl p-2 rounded-t-lg shadow-md', { 'rounded-b-lg': !showList })}>
-        <input name="search-token" onBlur={() => setShowList(false)} onChange={inputChange} className='w-full b-0 p-2 outline-none' placeholder="Search here" />
+        <input name="search-token" onBlur={() => setTimeout(() => setShowList(false), 500)} onChange={inputChange} className='w-full b-0 p-2 outline-none' placeholder="Search here" />
         <div role="list" className={cx("p-2 w-full border-t absolute bg-white rounded-b-lg overflow-y-auto max-h-72 z-40 shadow-md left-0 top-full", { "hidden": !showList })}>
             {!results.length ? <p role="listitem">No results found for &quot;{term}&quot;</p>
                 : <ul>
                     {results.map(r => {
-                        return <ResultItem key={r.id} link={`/trade/${r.id}USD`} title={r.id} />
+                        return <ResultItem key={r.id} link={`/trade/${r.id}-USD`} title={r.id} />
                     })}
                 </ul>
             }
