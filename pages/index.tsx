@@ -49,7 +49,7 @@ export default function Home() {
       })
       setRates(newRates)
     })
-  }, [tokens, homeTokens])
+  }, [homeTokens])
   const finalTokens = homeTokens.map(token => {
     return {
       id: token.id,
