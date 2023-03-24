@@ -105,14 +105,17 @@ export default function TradePair() {
             <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className={styles.main}>
-            <div className='flex flex-1 self-stretch bg-white p-4'>
-                <div className='flex-grow'>
+            <div className='flex flex-1 flex-wrap self-stretch bg-white p-4'>
+                <div className='flex-1'>
                     <h1 className='text-3xl font-bold'>{tokenPair?.base} / {tokenPair?.quote}</h1>
                     <h2 className='text-xl font-bold text-mute'>{history.length ? history[history.length - 1].rate_close : '--'} {tokenPair?.quote}</h2>
                     {history.length && (typeof window !== 'undefined') ? <ReactApexChart options={options as ApexOptions} series={series} /> : null}
                 </div>
-                <div className=''>
-                    <PairSelector onChange={() => null} />
+                <div className='flex-1'>
+                    <PairSelector defaultBase={tokenPair?.base} defaultQuote={tokenPair?.quote} onApply={(b, q) => router.push({
+                        pathname: "/trade/[pair]",
+                        query: { pair: `${b}-${q}` }
+                    }).then(() => router.reload())} />
                 </div>
             </div>
         </main>

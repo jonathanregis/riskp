@@ -6,5 +6,5 @@ export type tokenPairProps = {
 export type pairSelectorProps = {
   defaultBase?: string;
   defaultQuote?: string;
-  onChange: Function;
+  onApply: (base: string, quote: string) => void;
 };
