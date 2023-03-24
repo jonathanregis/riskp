@@ -40,14 +40,16 @@ export default function Home() {
   const homeTokens = tokens.filter(token => preferedTokens.includes(token.id));
   const [rates, setRates] = useState<any>({});
   useEffect(() => {
-    Promise.all(preferedTokens.map((token) => getPairRate({ base: token, quote: "USD" }).then(r => r))).then((data) => {
-      const newRates: { [key: string]: string } = {}
-      const givenRates = data;
-      givenRates.forEach((r, i) => {
-        newRates[r[0].id] = r[r.length - 1] //I wonder why coinbase api doesn't have BNB, makes no sense
+    if (!rates.ETH) {
+      Promise.all(preferedTokens.map((token) => getPairRate({ base: token, quote: "USD" }).then(r => r))).then((data) => {
+        const newRates: { [key: string]: string } = {}
+        const givenRates = data;
+        givenRates.forEach((r, i) => {
+          newRates[r[0].id] = r[r.length - 1]
+        })
+        setRates(newRates)
       })
-      setRates(newRates)
-    })
+    }
   }, [])
   const finalTokens = homeTokens.map(token => {
     return {
