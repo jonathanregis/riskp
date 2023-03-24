@@ -19,6 +19,7 @@ export const TokenPairsProvider = ({ children }: { children: ReactNode }) => {
         )
             .then((res) => res.json())
             .then((data) => {
+                data.push({ "id": "BNB", "name": "Binance Coin" })
                 setTokens(data)
             });
     }, []);

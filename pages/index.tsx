@@ -9,8 +9,53 @@ import WBTC from '../node_modules/cryptocurrency-icons/128/icon/wbtc.png';
 import UNI from '../node_modules/cryptocurrency-icons/128/icon/uni.png';
 import SUSHI from '../node_modules/cryptocurrency-icons/128/icon/sushi.png';
 import ZRX from '../node_modules/cryptocurrency-icons/128/icon/zrx.png';
+import { useTokens } from '@/contexts/TokensContext';
+import { useEffect, useState } from 'react';
+import { getPairRate } from '@/api/pairs';
+import { StaticImageData } from 'next/image';
+
+const icons: { [key: string]: StaticImageData } = {
+  ETH,
+  BNB,
+  MATIC,
+  WBTC,
+  UNI,
+  SUSHI,
+  ZRX
+}
+
+const colors: { [key: string]: string } = {
+  "ETH": "blue",
+  "BNB": "yellow",
+  "MATIC": "purple",
+  "WBTC": "black",
+  "UNI": "pink",
+  "SUSHI": "pink",
+  "ZRX": "black"
+}
 
 export default function Home() {
+  const preferedTokens = ["ETH", "BNB", "MATIC", "WBTC", "UNI", "SUSHI", "ZRX"];
+  const { tokens } = useTokens();
+  const homeTokens = tokens.filter(token => preferedTokens.includes(token.id));
+  const [rates, setRates] = useState<any>({});
+  useEffect(() => {
+    Promise.all(homeTokens.map((token) => getPairRate({ base: token.id, quote: "USD" }).then(r => r))).then((data) => {
+      const newRates: { [key: string]: string } = {}
+      const givenRates = data;
+      givenRates.forEach((r, i) => {
+        newRates[r[0].id] = r[r.length - 1] //I wonder why coinbase api doesn't have BNB, makes no sense
+      })
+      setRates(newRates)
+    })
+  }, [])
+  const finalTokens = homeTokens.map(token => {
+    return {
+      id: token.id,
+      icon: icons[token.id].src,
+      color: colors[token.id]
+    }
+  })
   return (
     <>
       <Head>
@@ -24,27 +69,12 @@ export default function Home() {
         <h1 className='text-4xl uppercase font-bold text-center mt-20'>Get the best prices accross all exchanges</h1>
         <p className='text-center text-xl'>Select a token below to view and start trading</p>
         <div className='flex mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl w-full'>
-          <Card title='ETH' subtitle='$1,322.59' icon={ETH.src} href="/trade/ETH-USD">
-            <h2>+7.8%</h2>
-          </Card>
-          <Card title='BNB' subtitle='$1,322.59' color='yellow' icon={BNB.src} href="/trade/BNB-USD">
-            <h2>+7.8%</h2>
-          </Card>
-          <Card title='MATIC' subtitle='$1,322.59' color='purple' icon={MATIC.src} href="/trade/MATIC-USD">
-            <h2>+7.8%</h2>
-          </Card>
-          <Card title='WBTC' subtitle='$1,322.59' color='black' icon={WBTC.src} href="/trade/WBTC-USD">
-            <h2>+7.8%</h2>
-          </Card>
-          <Card title='UNI' subtitle='$1,322.59' color='pink' icon={UNI.src} href="/trade/UNI-USD">
-            <h2>+7.8%</h2>
-          </Card>
-          <Card title='SUSHI' subtitle='$1,322.59' color='pink' icon={SUSHI.src} href="/trade/SUSHI-USD">
-            <h2>+7.8%</h2>
-          </Card>
-          <Card title='ZRX' subtitle='$1,322.59' color='black' icon={ZRX.src} href="/trade/ZRX-USD">
-            <h2>+7.8%</h2>
-          </Card>
+          {finalTokens.map(token => {
+            const { rate_close, rate_open } = rates[token.id] || { rate_close: 0, rate_open: 0 }
+            return <Card title={token.id} subtitle={Intl.NumberFormat("US-en", { currency: "USD", style: "currency" }).format(parseFloat(rate_close))} icon={token.icon} href={`/trade/${token.id}-USD`}>
+              <h2>{`${((rate_close - rate_open) / rate_close * 100).toFixed(2)}%`}</h2>
+            </Card>
+          })}
         </div>
 
       </main>

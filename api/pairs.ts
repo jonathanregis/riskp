@@ -27,7 +27,12 @@ export const getPairRate = (
     { headers: { "X-CoinAPI-Key": coinAPIKey } }
   )
     .then((res) => res.json())
-    .then((response) => response)
+    .then((response) =>
+      response.map((r: any) => ({
+        ...r,
+        id: base,
+      }))
+    )
     .catch((e) => {
       throw e;
     });
