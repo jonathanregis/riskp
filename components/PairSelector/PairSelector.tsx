@@ -26,7 +26,7 @@ export function PairSelector({ defaultBase = 'ETH', defaultQuote = 'USD', onAppl
     return <div className="flex flex-1 flex-wrap align-center justify-between">
         <div className="p-2">
             <p className="text-slate-400 uppercase text-xs">from</p>
-            <select onChange={change} value={base} name="base" className="border-none text-bold text-sm">
+            <select aria-label="from" onChange={change} value={base} name="base" className="border-none text-bold text-sm">
                 {tokens.length && tokens.map((token) => {
                     return <option key={token.id} value={token.id}>{token.id} - {token.name}</option>
                 })}
@@ -34,7 +34,7 @@ export function PairSelector({ defaultBase = 'ETH', defaultQuote = 'USD', onAppl
         </div>
         <div className="p-2">
             <p className="text-slate-400 uppercase text-xs">to</p>
-            <select onChange={change} value={quote} name="quote" className="border-none text-bold text-sm">
+            <select aria-label="to" onChange={change} value={quote} name="quote" className="border-none text-bold text-sm">
                 {tokens.length && tokens.map((token) => {
                     return <option key={token.id} value={token.id}>{token.id} - {token.name}</option>
                 })}

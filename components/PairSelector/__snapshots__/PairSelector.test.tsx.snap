@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PairSelector component calls onApply function when update button is clicked 1`] = `
+<div>
+  <div
+    class="flex flex-1 flex-wrap align-center justify-between"
+  >
+    <div
+      class="p-2"
+    >
+      <p
+        class="text-slate-400 uppercase text-xs"
+      >
+        from
+      </p>
+      <select
+        aria-label="from"
+        class="border-none text-bold text-sm"
+        name="base"
+      >
+        0
+      </select>
+    </div>
+    <div
+      class="p-2"
+    >
+      <p
+        class="text-slate-400 uppercase text-xs"
+      >
+        to
+      </p>
+      <select
+        aria-label="to"
+        class="border-none text-bold text-sm"
+        name="quote"
+      >
+        0
+      </select>
+    </div>
+    <button
+      class="p-4 w-full flex-basis-full bg-[#daec03] text-bold uppercase m-4"
+    >
+      update
+    </button>
+  </div>
+</div>
+`;
+
+exports[`PairSelector component renders from and to select fields 1`] = `
+<div>
+  <div
+    class="flex flex-1 flex-wrap align-center justify-between"
+  >
+    <div
+      class="p-2"
+    >
+      <p
+        class="text-slate-400 uppercase text-xs"
+      >
+        from
+      </p>
+      <select
+        aria-label="from"
+        class="border-none text-bold text-sm"
+        name="base"
+      >
+        0
+      </select>
+    </div>
+    <div
+      class="p-2"
+    >
+      <p
+        class="text-slate-400 uppercase text-xs"
+      >
+        to
+      </p>
+      <select
+        aria-label="to"
+        class="border-none text-bold text-sm"
+        name="quote"
+      >
+        0
+      </select>
+    </div>
+  </div>
+</div>
+`;
