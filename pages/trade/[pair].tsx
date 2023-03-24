@@ -1,14 +1,21 @@
 import Head from 'next/head'
 import styles from '@/styles/Trade.module.css'
 import { useRouter } from 'next/router'
-import { getPairFromString } from '@/utils/helpers';
+import { getPairFromString, getTokenPairAddresses } from '@/utils/helpers';
 import { useEffect, useState } from 'react';
-import { getPairRate } from '@/api/pairs';
+import { coinAPIKey, getOrderBook, getPairRate } from '@/api/pairs';
 import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic'
 import { PairSelector } from '@/components/PairSelector/PairSelector';
+import { useTokens } from '@/contexts/TokensContext';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { v4 } from 'uuid';
+import { OrderBook } from '@/components/OrderBook/OrderBook';
+
+const orderBookMock = require("@/mockData/orderBook.json");
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const reqId = v4();
 
 export default function TradePair() {
     const router = useRouter();
@@ -17,6 +24,8 @@ export default function TradePair() {
     const [pair, setPair] = useState(router.query.pair);
     const [tokenPair, setTokenPair] = useState<{ quote: string, base: string } | null>(null);
     const [history, setHistory] = useState<any[]>([]);
+    const [orderBook, setOrderBook] = useState<any[]>([]);
+    const { tokens } = useTokens();
 
     const series = [{
         name: 'price',
@@ -89,12 +98,60 @@ export default function TradePair() {
     }, [router.isReady])
 
     useEffect(() => {
-        if (tokenPair) {
+        if (tokenPair && tokens.length) {
             getPairRate(tokenPair).then(data => {
                 setHistory(data)
             })
+            const addresses = getTokenPairAddresses(tokenPair.quote, tokenPair.base, tokens)
+            getOrderBook(addresses).then(data => {
+                setOrderBook(data);
+                getOrderData(data.bids.records[0].order)
+            })
+
         }
-    }, [tokenPair])
+    }, [tokenPair, tokens])
+
+    //const { sendMessage, lastMessage, readyState } = useWebSocket("wss://ws.bitstamp.net");
+    const [messageHistory, setMessageHistory] = useState([]);
+
+    // useEffect(() => {
+    //     if (lastMessage !== null) {
+    //         console.log({ lastMessage })
+    //         setMessageHistory((prev) => prev.concat(lastMessage));
+
+    //     }
+    // }, [lastMessage, setMessageHistory]);
+
+    // const connectionStatus = {
+    //     [ReadyState.CONNECTING]: 'Connecting',
+    //     [ReadyState.OPEN]: 'Open',
+    //     [ReadyState.CLOSING]: 'Closing',
+    //     [ReadyState.CLOSED]: 'Closed',
+    //     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+    // }[readyState];
+
+    // useEffect(() => {
+    //     if (connectionStatus === "Open" && tokenPair) {
+    //         /*sendMessage(JSON.stringify({
+    //             "event": "bts:subscribe",
+    //             "data": {
+    //                 "channel": `order_book_${tokenPair.base.toLowerCase()}${tokenPair.quote.toLowerCase()}`
+    //             }
+    //         }))*/
+    //     }
+    // }, [connectionStatus, tokenPair])
+
+    console.log({ messageHistory })
+
+    const getOrderData = (order: any) => {
+        const makerAmount = parseFloat(order.makerAmount);
+        const takerAmount = parseFloat(order.takerAmount);
+        const price = takerAmount / makerAmount;
+
+        console.log(`Price: ${price} ${order.takerToken}/${order.makerToken}`);
+        console.log(`Maker amount: ${makerAmount} ${order.makerToken}`);
+        console.log(`Taker amount: ${takerAmount} ${order.takerToken}`);
+    }
 
     return <>
         <style jsx global>
@@ -112,16 +169,17 @@ export default function TradePair() {
         </Head>
         <main className={styles.main}>
             <div className='flex flex-1 flex-wrap self-stretch bg-white p-4'>
-                <div className='flex-1'>
+                <div className='mr-2 flex-1'>
                     <h1 className='text-3xl font-bold'>{tokenPair?.base} / {tokenPair?.quote}</h1>
                     <h2 className='text-xl font-bold text-mute'>{history.length ? Intl.NumberFormat().format(history[history.length - 1].rate_close) : '--'} {tokenPair?.quote}</h2>
                     {history.length && (typeof window !== 'undefined') ? <ReactApexChart options={options as ApexOptions} series={series} /> : null}
                 </div>
-                <div className='flex-1'>
+                <div className='ml-2 flex-1'>
                     <PairSelector defaultBase={tokenPair?.base} defaultQuote={tokenPair?.quote} onApply={(b, q) => router.push({
                         pathname: "/trade/[pair]",
                         query: { pair: `${b}-${q}` }
                     }).then(() => router.reload())} />
+                    <OrderBook bids={orderBookMock.data.bids.slice(0, 12)} asks={orderBookMock.data.asks.slice(0, 12)} tokenId={tokenPair?.quote} />
                 </div>
             </div>
         </main>

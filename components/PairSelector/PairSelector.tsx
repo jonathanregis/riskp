@@ -23,7 +23,7 @@ export function PairSelector({ defaultBase = 'ETH', defaultQuote = 'USD', onAppl
         setQuote(defaultQuote);
     }, [defaultBase, defaultQuote])
 
-    return <div className="flex flex-1 flex-wrap align-center justify-between">
+    return <div className="flex shadow-lg rounded-lg flex-1 flex-wrap align-center justify-between">
         <div className="p-2">
             <p className="text-slate-400 uppercase text-xs">from</p>
             <select aria-label="from" onChange={change} value={base} name="base" className="border-none text-bold text-sm">

@@ -45,11 +45,24 @@ export function getPairFromString(
   return { base, quote };
 }
 
-export function getTokenPair(
+export function getTokenPairAddresses(
   quote: string,
   base: string,
   tokens: any[]
 ) {
+  // If we can't find a token let's just use USDC
+  // The 0x api requires contract addresses to get the order book. But USD does not have one
+  // So let's use usdc to substitute usd just so we can have an address to send to the api
+  if (quote == "USD") {
+    quote = "USDT";
+  }
+
+  if (base == "USD") {
+    base = "USDT";
+  }
+
+  console.log({ tokens });
+
   const quoteToken = tokens.find(
     (x) => x.id == quote
   );
@@ -58,20 +71,21 @@ export function getTokenPair(
   );
   if (quoteToken && baseToken) {
     return {
-      quoteAddress:
+      quote:
         quoteToken.supported_networks[0]
           ?.contract_address ||
         quoteToken.supported_networks[1]
           ?.contract_address ||
         "",
-      baseAddress:
+      base:
         baseToken.supported_networks[0]
           ?.contract_address ||
         baseToken.supported_networks[1]
           ?.contract_address ||
         "",
-      fullTokenDetails: { quoteToken, baseToken },
     };
   } else
-    throw "One of the tokens were not found in our list of tokens";
+    throw `One of the tokens were not found in our list of tokens ${
+      !baseToken ? base : null
+    }, ${!quoteToken ? quote : null}`;
 }
