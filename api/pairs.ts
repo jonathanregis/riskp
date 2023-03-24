@@ -2,7 +2,7 @@ import { tokenPairProps } from "@/types/tokenPair";
 const pairRates = require("@/mockData/pairRates.json");
 
 export const coinAPIKey =
-  "916BEB7D-3247-4B9F-8C07-4C94A141781C";
+  "2E415745-0783-4243-A492-61B3EA9CB4D4";
 
 export const getOrderBook = (
   pair: tokenPairProps
