@@ -3,7 +3,7 @@
 exports[`PairSelector component calls onApply function when update button is clicked 1`] = `
 <div>
   <div
-    class="flex flex-1 flex-wrap align-center justify-between"
+    class="flex shadow-lg rounded-lg flex-1 flex-wrap align-center justify-between"
   >
     <div
       class="p-2"
@@ -49,7 +49,7 @@ exports[`PairSelector component calls onApply function when update button is cli
 exports[`PairSelector component renders from and to select fields 1`] = `
 <div>
   <div
-    class="flex flex-1 flex-wrap align-center justify-between"
+    class="flex shadow-lg rounded-lg flex-1 flex-wrap align-center justify-between"
   >
     <div
       class="p-2"

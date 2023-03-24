@@ -107,7 +107,7 @@ export default function TradePair() {
     }, [tokenPair, tokens])
 
     const { sendMessage, lastMessage, readyState } = useWebSocket("wss://ws.bitstamp.net");
-    const [messageHistory, setMessageHistory] = useState([]);
+    const [messageHistory, setMessageHistory] = useState<any[]>([]);
 
     useEffect(() => {
         if (lastMessage !== null) {
