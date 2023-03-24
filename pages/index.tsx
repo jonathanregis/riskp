@@ -71,7 +71,7 @@ export default function Home() {
         <div className='flex mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl w-full'>
           {finalTokens.map(token => {
             const { rate_close, rate_open } = rates[token.id] || { rate_close: 0, rate_open: 0 }
-            return <Card key={token.id} title={token.id} subtitle={Intl.NumberFormat("US-en", { currency: "USD", style: "currency" }).format(parseFloat(rate_close))} icon={token.icon} href={`/trade/${token.id}-USD`}>
+            return <Card key={token.id} color={token.color} title={token.id} subtitle={Intl.NumberFormat("US-en", { currency: "USD", style: "currency" }).format(parseFloat(rate_close))} icon={token.icon} href={`/trade/${token.id}-USD`}>
               <h2>{`${((rate_close - rate_open) / rate_close * 100).toFixed(2)}%`}</h2>
             </Card>
           })}

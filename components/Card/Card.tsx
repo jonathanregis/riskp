@@ -6,7 +6,7 @@ interface CardProps {
     children: ReactNode;
     title?: string;
     subtitle?: string;
-    color?: "blue" | "yellow" | "green" | "purple" | "pink" | "black";
+    color?: "blue" | "yellow" | "green" | "purple" | "pink" | "black" | string;
     icon?: string;
     href?: string;
     onClick?: Function
