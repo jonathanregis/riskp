@@ -43,12 +43,13 @@ export default function Home() {
     Promise.all(homeTokens.map((token) => getPairRate({ base: token.id, quote: "USD" }).then(r => r))).then((data) => {
       const newRates: { [key: string]: string } = {}
       const givenRates = data;
+      console.log({ data })
       givenRates.forEach((r, i) => {
         newRates[r[0].id] = r[r.length - 1] //I wonder why coinbase api doesn't have BNB, makes no sense
       })
       setRates(newRates)
     })
-  }, [])
+  }, [tokens, homeTokens])
   const finalTokens = homeTokens.map(token => {
     return {
       id: token.id,
