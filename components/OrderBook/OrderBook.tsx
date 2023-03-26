@@ -46,9 +46,9 @@ export function OrderBook({ bids, asks, tokenId = "USD" }: { bids: any[], asks: 
                 const formattedQuantity = Intl.NumberFormat().format(quantity)
                 return <div key={"ask-" + index} className="flex my-2 justify-between align-center relative">
                     <div style={{ width: percentage + "%" }} className={cx(`absolute h-full top-0 z-0 opacity-25 left-0 bg-[#ffcccb]`)}>&nbsp;</div>
-                    <p>{formattedPrice}</p>
-                    <p>{formattedQuantity}</p>
                     <p>{Intl.NumberFormat().format(total)}</p>
+                    <p>{formattedQuantity}</p>
+                    <p>{formattedPrice}</p>
                 </div>
             })}
         </div>
