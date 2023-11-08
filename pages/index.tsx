@@ -61,8 +61,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Home | Tech Test</title>
-        <meta name="description" content="Technical test from The Risk Protocol" />
+        <title>Home | Crypto market</title>
+        <meta name="description" content="Crypto market info" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
