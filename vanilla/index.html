@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Crypto market</title>
+    <link rel="stylesheet" href="./styles/globals.css" />
+    <link rel="stylesheet" href="./styles/Home.module.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./scripts/search.js"></script>
+</head>
+
+<body>
+    <main id="main" class="main">
+        <div class="bg-white w-full relative max-w-2xl p-2 rounded-t-lg rounded-b-lg shadow-md">
+            <input name="search-token" onblur="hideList()" oninput="inputChange(this)"
+                class='w-full b-0 p-2 outline-none' placeholder="Search here" />
+            <div id="searchResults" role="list"
+                class="p-2 w-full border-t absolute bg-white rounded-b-lg overflow-y-auto max-h-72 z-40 shadow-md left-0 top-full hidden">
+            </div>
+        </div>
+        <h1 class='text-4xl uppercase font-bold text-center mt-20'>Get the best prices across all exchanges</h1>
+        <p class='text-center text-xl'>Select a token below to view and start trading</p>
+        <div id="tokenGrid" class='flex mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl w-full'>
+            <!-- Cards will be added here -->
+        </div>
+    </main>
+    <script src="./scripts/api/pairs.js"></script>
+    <script src="./scripts/home.js"></script>
+</body>
+
+</html>
